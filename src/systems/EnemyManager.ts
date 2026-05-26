@@ -18,7 +18,6 @@ import {
   ENEMY_TYPE_CONFIGS,
   AI_GLOBALS,
   type EnemyTypeConfig,
-  type SpawnPoint as _SpawnPoint,
 } from '../ai/AIConfigs';
 import { AITickManager } from '../ai/AITickManager';
 import { AwarenessSystem } from '../ai/AwarenessSystem';
@@ -60,7 +59,7 @@ export class EnemyManager {
   private pools: Map<EnemyType, ObjectPool<Enemy>> = new Map();
   private poolSize: number;
 
-  constructor(scene: Scene, poolSize = 12, qualityLevel = QualityLevel.MEDIUM) {
+  constructor(scene: Scene, poolSize = 12, qualityLevel: QualityLevel = QualityLevel.MEDIUM) {
     this.scene = scene;
     this.quality = qualityLevel;
     this.poolSize = poolSize;

@@ -42,12 +42,13 @@ import type { DebugVisualizer } from '../ai/DebugVisualizer';
 // ─── Deprecated enum kept for backward compat ──────────────────────
 
 /** @deprecated Use AwarenessLevel and CombatStance from ai/AIConfigs instead */
-export enum EnemyState {
-  IDLE = 'idle',
-  ALERT = 'alert',
-  ATTACK = 'attack',
-  DEATH = 'death',
-}
+export const EnemyState = {
+  IDLE: 'idle',
+  ALERT: 'alert',
+  ATTACK: 'attack',
+  DEATH: 'death',
+} as const;
+export type EnemyState = (typeof EnemyState)[keyof typeof EnemyState];
 
 /** @deprecated Use EnemyTypeConfig from ai/AIConfigs instead */
 export interface EnemyConfig {
@@ -456,7 +457,7 @@ export class Enemy {
       this.typeConfig.alertRange,
     );
 
-    if (this.awareness.level !== this.mapAwarenessToOldState()) {
+    if (this.mapAwarenessToOldState() !== this.oldState) {
       const oldCompatible = this.mapAwarenessToOldState();
       if (oldCompatible !== this.oldState) {
         this.oldState = oldCompatible;

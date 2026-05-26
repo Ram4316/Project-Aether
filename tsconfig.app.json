@@ -29,6 +29,7 @@
 
     /* Linting */
     "strict": true,
+    "ignoreDeprecations": "6.0",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "erasableSyntaxOnly": true,

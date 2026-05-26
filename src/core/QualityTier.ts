@@ -3,11 +3,12 @@
  * Adjusts shadows, post-processing, particle density, and texture resolution.
  */
 
-export enum QualityLevel {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-}
+export const QualityLevel = {
+  LOW: 'low',
+  MEDIUM: 'medium',
+  HIGH: 'high',
+} as const;
+export type QualityLevel = (typeof QualityLevel)[keyof typeof QualityLevel];
 
 export interface QualitySettings {
   level: QualityLevel;
@@ -99,7 +100,7 @@ export class QualityTierDetector {
     const rendererLower = (renderer as string).toLowerCase();
 
     // Check device memory (if available)
-    const deviceMemory = (navigator as Record<string, unknown>).deviceMemory as number | undefined;
+    const deviceMemory = (navigator as unknown as Record<string, unknown>).deviceMemory as number | undefined;
     const hardwareConcurrency = navigator.hardwareConcurrency || 2;
 
     // Scoring system
