@@ -1,0 +1,133 @@
+/* Mobile Controls Styles — Phase 2 */
+
+.mobile-controls {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  touch-action: none;
+}
+
+/* ── Joystick ── */
+.joystick-zone {
+  position: absolute;
+  bottom: 16px; left: 16px;
+  width: 140px; height: 140px;
+  pointer-events: auto;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.joystick-base {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: rgba(0, 229, 255, 0.05);
+  border: 2px solid rgba(0, 229, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.joystick-zone.active .joystick-base {
+  background: rgba(0, 229, 255, 0.1);
+  border-color: rgba(0, 229, 255, 0.25);
+}
+
+.joystick-knob {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.45) 0%, rgba(0, 229, 255, 0.12) 100%);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  transition: transform 0.05s ease-out;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+}
+
+/* ── Action Buttons ── */
+.action-buttons {
+  position: absolute;
+  bottom: 16px; right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.action-btn {
+  border-radius: 50%;
+  border: 2px solid rgba(0, 229, 255, 0.18);
+  background: rgba(0, 229, 255, 0.06);
+  color: rgba(0, 229, 255, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.action-btn:active {
+  background: rgba(0, 229, 255, 0.18);
+  border-color: rgba(0, 229, 255, 0.45);
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.25);
+}
+
+.fire-btn {
+  width: 72px; height: 72px;
+  font-size: 28px;
+  border-color: rgba(255, 23, 68, 0.25);
+  background: rgba(255, 23, 68, 0.06);
+  color: rgba(255, 23, 68, 0.75);
+}
+.fire-btn:active {
+  background: rgba(255, 23, 68, 0.22);
+  border-color: rgba(255, 23, 68, 0.55);
+  box-shadow: 0 0 14px rgba(255, 23, 68, 0.25);
+}
+
+.reload-btn {
+  width: 48px; height: 48px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.jump-btn {
+  width: 48px; height: 48px;
+  font-size: 18px;
+}
+
+/* ── Weapon Switch Row ── */
+.weapon-switch-row {
+  position: absolute;
+  top: 12px; right: 12px;
+  display: flex;
+  gap: 6px;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.weapon-switch-btn {
+  padding: 6px 12px;
+  font-size: 10px;
+  font-family: 'Orbitron', monospace;
+  color: rgba(0, 229, 255, 0.6);
+  background: rgba(0, 229, 255, 0.05);
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  letter-spacing: 1px;
+}
+
+.weapon-switch-btn:active {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: rgba(0, 229, 255, 0.4);
+  color: #00e5ff;
+}

@@ -1,0 +1,552 @@
+/* HUD Styles — Phase 2: Weapon selector, reload bar, dynamic crosshair */
+
+.hud-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  font-family: 'Orbitron', 'Segoe UI', monospace;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ══════════════════════════════════════════
+   CROSSHAIR
+   ══════════════════════════════════════════ */
+
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 26px;
+  height: 26px;
+  transition: width 0.15s ease, height 0.15s ease, opacity 0.2s ease;
+}
+
+.crosshair.reloading {
+  opacity: 0.3;
+  width: 18px;
+  height: 18px;
+}
+
+.crosshair-line {
+  position: absolute;
+  background: rgba(0, 229, 255, 0.8);
+  transition: all 0.08s ease;
+}
+
+.crosshair-line.top {
+  top: 0; left: 50%;
+  width: 2px; height: 8px;
+  transform: translateX(-50%);
+}
+.crosshair-line.bottom {
+  bottom: 0; left: 50%;
+  width: 2px; height: 8px;
+  transform: translateX(-50%);
+}
+.crosshair-line.left {
+  top: 50%; left: 0;
+  width: 8px; height: 2px;
+  transform: translateY(-50%);
+}
+.crosshair-line.right {
+  top: 50%; right: 0;
+  width: 8px; height: 2px;
+  transform: translateY(-50%);
+}
+
+.crosshair-dot {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 3px; height: 3px;
+  background: rgba(0, 229, 255, 0.9);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Hit marker */
+.crosshair.hit .crosshair-line {
+  background: #ff1744;
+  box-shadow: 0 0 6px #ff1744;
+}
+.crosshair.hit .crosshair-dot {
+  background: #ff1744;
+  box-shadow: 0 0 8px #ff1744;
+}
+
+/* ══════════════════════════════════════════
+   DAMAGE FLASH
+   ══════════════════════════════════════════ */
+
+.damage-flash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(255, 0, 0, 0.3) 100%);
+  animation: flash-fade 0.2s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes flash-fade {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* ══════════════════════════════════════════
+   HEALTH BAR
+   ══════════════════════════════════════════ */
+
+.hud-health {
+  position: absolute;
+  bottom: 24px; left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.health-icon {
+  color: #00e5ff;
+  font-size: 18px;
+  text-shadow: 0 0 8px #00e5ff;
+}
+
+.health-bar-container {
+  width: 160px; height: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.health-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  border-radius: 4px;
+}
+
+.health-text {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px currentColor;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ══════════════════════════════════════════
+   AMMO COUNTER
+   ══════════════════════════════════════════ */
+
+.hud-ammo {
+  position: absolute;
+  bottom: 24px; right: 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  min-width: 120px;
+  justify-content: flex-end;
+}
+
+.ammo-current {
+  font-size: 32px;
+  font-weight: 700;
+  color: #00e5ff;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+  letter-spacing: 2px;
+  transition: color 0.15s ease;
+}
+
+.ammo-separator {
+  font-size: 16px;
+  color: rgba(0, 229, 255, 0.4);
+  margin: 0 2px;
+}
+
+.ammo-reserve {
+  font-size: 16px;
+  color: rgba(0, 229, 255, 0.5);
+  letter-spacing: 1px;
+}
+
+/* Low ammo flash */
+.hud-ammo.low-ammo .ammo-current,
+.flash-red {
+  animation: low-ammo-flash 0.5s ease-in-out infinite;
+}
+
+@keyframes low-ammo-flash {
+  0%, 100% { color: #ff1744; text-shadow: 0 0 10px rgba(255, 23, 68, 0.5); }
+  50% { color: #ffab00; text-shadow: 0 0 10px rgba(255, 171, 0, 0.5); }
+}
+
+/* Reload indicator */
+.ammo-reloading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.reload-text {
+  font-size: 12px;
+  color: #ffab00;
+  text-shadow: 0 0 8px rgba(255, 171, 0, 0.4);
+  letter-spacing: 2px;
+  animation: reload-pulse 0.6s ease-in-out infinite;
+}
+
+.reload-bar {
+  width: 100px; height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.reload-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffab00, #00e5ff);
+  border-radius: 2px;
+  width: 0%;
+  animation: reload-fill forwards linear;
+}
+
+@keyframes reload-fill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+@keyframes reload-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ══════════════════════════════════════════
+   WEAPON SELECTOR
+   ══════════════════════════════════════════ */
+
+.weapon-selector {
+  position: absolute;
+  bottom: 62px; right: 24px;
+  display: flex;
+  gap: 6px;
+}
+
+.weapon-selector.flash {
+  animation: selector-flash 0.3s ease;
+}
+
+@keyframes selector-flash {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.8); }
+  100% { filter: brightness(1); }
+}
+
+.weapon-slot {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(0, 229, 255, 0.04);
+  border: 1px solid rgba(0, 229, 255, 0.1);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.weapon-slot.active {
+  background: rgba(0, 229, 255, 0.1);
+  border-color: rgba(0, 229, 255, 0.4);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.15);
+}
+
+.weapon-key {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(0, 229, 255, 0.4);
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 2px;
+}
+
+.weapon-slot.active .weapon-key {
+  color: #00e5ff;
+  border-color: rgba(0, 229, 255, 0.5);
+}
+
+.weapon-name {
+  font-size: 10px;
+  color: rgba(0, 229, 255, 0.3);
+  letter-spacing: 1px;
+}
+
+.weapon-slot.active .weapon-name {
+  color: rgba(0, 229, 255, 0.7);
+}
+
+/* Weapon switch display (center) */
+.weapon-switch-display {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 229, 255, 0.7);
+  letter-spacing: 3px;
+  text-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+  animation: switch-display 0.4s ease-out forwards;
+}
+
+@keyframes switch-display {
+  0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  30% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-5px); }
+}
+
+/* ══════════════════════════════════════════
+   PERFORMANCE OVERLAY
+   ══════════════════════════════════════════ */
+
+.perf-overlay {
+  position: absolute;
+  top: 8px; left: 8px;
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  color: rgba(0, 255, 128, 0.7);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 6px 10px;
+  border-radius: 4px;
+  line-height: 1.6;
+  border: 1px solid rgba(0, 255, 128, 0.12);
+}
+
+.perf-low {
+  color: #ff1744;
+  font-weight: bold;
+}
+
+/* ══════════════════════════════════════════
+   LOCK PROMPT
+   ══════════════════════════════════════════ */
+
+.lock-prompt {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.65);
+  pointer-events: none;
+}
+
+.lock-prompt-box {
+  text-align: center;
+  padding: 36px 52px;
+  background: rgba(8, 8, 25, 0.9);
+  border: 1px solid rgba(0, 229, 255, 0.18);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.lock-prompt-title {
+  font-size: 36px;
+  font-weight: 900;
+  color: #00e5ff;
+  text-shadow: 0 0 24px rgba(0, 229, 255, 0.4);
+  letter-spacing: 8px;
+  margin-bottom: 4px;
+}
+
+.lock-prompt-subtitle {
+  font-size: 11px;
+  color: rgba(0, 229, 255, 0.35);
+  letter-spacing: 5px;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+.lock-prompt-sub {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 1px;
+  line-height: 1.9;
+}
+
+/* ══════════════════════════════════════════
+   MOBILE ADJUSTMENTS
+   ══════════════════════════════════════════ */
+
+/* ══════════════════════════════════════════
+   LOW-HEALTH CINEMATIC FEEDBACK
+   ══════════════════════════════════════════ */
+
+/*
+ * Architecture:
+ *   .low-health-vignette — permanent radial red gradient overlay
+ *   .low-health-pulse    — heartbeat "thump" ring that expands rhythmically
+ *   Both layers use CSS custom properties (--lh-vignette, --lh-pulse) driven
+ *   by the LowHealthEffects system via React state, avoiding per-frame DOM writes.
+ *
+ * Performance:
+ *   - GPU-composited via will-change: opacity, transform
+ *   - No layout thrashing (opacity + transform only)
+ *   - Hidden entirely (display:none) when vignette = 0, saving GPU fill
+ *   - Mobile-safe: uses same properties, just reduced ring size
+ */
+
+/* ── Vignette Layer ── */
+.low-health-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9; /* below HUD (10) but above canvas */
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+  will-change: opacity;
+  /* Multi-stop radial: dark edges, red ring at ~60%, clear center */
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 35%,
+      rgba(180, 0, 0, 0) 55%,
+      rgba(180, 0, 0, 0.55) 78%,
+      rgba(120, 0, 0, 0.7) 90%,
+      rgba(60, 0, 0, 0.82) 100%
+    );
+}
+
+.low-health-vignette.active {
+  opacity: var(--lh-vignette, 0);
+}
+
+/* ── Heartbeat Pulse Layer ── */
+.low-health-pulse {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+  will-change: opacity;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.low-health-pulse.active {
+  opacity: var(--lh-pulse, 0);
+}
+
+/* The expanding ring */
+.low-health-pulse-ring {
+  width: 60vmin;
+  height: 60vmin;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 30, 30, 0.6);
+  box-shadow:
+    0 0 40px rgba(255, 20, 20, 0.35),
+    inset 0 0 40px rgba(255, 20, 20, 0.12);
+  animation: heartbeat-thump var(--lh-pulse-speed, 3s) ease-out infinite;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+@keyframes heartbeat-thump {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  8% {
+    transform: scale(0.92);
+    opacity: 0.7;
+  }
+  16% {
+    transform: scale(1.0);
+    opacity: 0.4;
+  }
+  24% {
+    transform: scale(1.04);
+    opacity: 0.15;
+  }
+  100% {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+}
+
+/* Second ring for double-beat (feels like lub-dub) */
+.low-health-pulse-ring.double {
+  border-color: rgba(255, 10, 10, 0.45);
+  box-shadow:
+    0 0 30px rgba(255, 10, 10, 0.25),
+    inset 0 0 30px rgba(255, 10, 10, 0.08);
+  animation: heartbeat-thump-double var(--lh-pulse-speed, 3s) ease-out infinite;
+  animation-delay: calc(var(--lh-pulse-speed, 3s) * 0.15);
+}
+
+@keyframes heartbeat-thump-double {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  6% {
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+  12% {
+    transform: scale(0.96);
+    opacity: 0.3;
+  }
+  20% {
+    transform: scale(1.0);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+}
+
+/* ── Screen desaturation overlay (subtle, layered below vignette) ── */
+.low-health-desaturate {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  will-change: opacity;
+  background: rgba(20, 20, 30, 0);
+  mix-blend-mode: saturation;
+}
+
+.low-health-desaturate.active {
+  opacity: var(--lh-desaturate, 0);
+  background: rgba(20, 20, 30, calc(var(--lh-desaturate, 0) * 0.4));
+}
+
+/* ══════════════════════════════════════════
+   MOBILE ADJUSTMENTS
+   ══════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .lock-prompt-box { padding: 24px 32px; }
+  .lock-prompt-title { font-size: 24px; letter-spacing: 5px; }
+  .lock-prompt-sub { font-size: 10px; }
+  .health-bar-container { width: 110px; }
+  .ammo-current { font-size: 24px; }
+  .hud-health, .hud-ammo { bottom: 85px; }
+  .weapon-selector { bottom: 120px; }
+  .weapon-slot { padding: 3px 6px; }
+  .weapon-name { display: none; }
+
+  /* Scale down pulse rings on mobile */
+  .low-health-pulse-ring {
+    width: 45vmin;
+    height: 45vmin;
+    border-width: 2px;
+  }
+}
